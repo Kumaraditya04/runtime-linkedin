@@ -52,10 +52,22 @@ class LinkedInCrawler(BaseCrawler):
         if "/login" in page.url or "/signup" in page.url:
             raise ValueError("Hit LinkedIn login wall! LI_AT cookie might be invalid or missing.")
 
-        # Scroll to load posts
-        for _ in range(scroll_count):
-            await page.mouse.wheel(0, 800)
+        # Scroll to load full page of posts with human-like delays
+        last_height = 0
+        for i in range(scroll_count):
+            # Random scroll distance between 600px and 1200px
+            scroll_by = random.randint(600, 1200)
+            await page.mouse.wheel(0, scroll_by)
+            
+            # Human jitter delay between scrolls (1.5s - 3.5s)
             await self._random_delay(min_delay, max_delay)
+            
+            # Check if we hit the bottom of the page
+            new_height = await page.evaluate("document.body.scrollHeight")
+            if new_height == last_height and i > 4:
+                logger.info("Reached end of search results feed.")
+                break
+            last_height = new_height
 
         # Wait for posts to appear (try all selectors in the list)
         found_selector = None
