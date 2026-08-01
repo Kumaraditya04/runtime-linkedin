@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Lead } from "../types";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Eye, MessageSquareText, User, Clock } from "lucide-react";
+import { formatIST } from "@/lib/date";
 import {
   Dialog,
   DialogContent,
@@ -12,42 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-// Helper function to convert UTC date strings accurately to Indian Standard Time (IST / Asia/Kolkata)
-function formatIST(dateStr: string | null | undefined, includeTime = true) {
-  if (!dateStr) return "N/A";
-  try {
-    let s = String(dateStr).trim();
-    if (s.includes(" ") && !s.includes("T")) {
-      s = s.replace(" ", "T");
-    }
-    if (!s.endsWith("Z") && !s.includes("+")) {
-      s += "Z";
-    }
-    const date = new Date(s);
-    if (isNaN(date.getTime())) return "N/A";
-    
-    if (includeTime) {
-      return date.toLocaleString("en-IN", {
-        timeZone: "Asia/Kolkata",
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-    }
-    return date.toLocaleDateString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  } catch (e) {
-    return "N/A";
-  }
-}
 
 export const leadColumns: ColumnDef<Lead>[] = [
   {

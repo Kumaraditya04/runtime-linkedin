@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { JobExecution } from "../types";
 import { Badge } from "@/components/ui/badge";
+import { formatIST } from "@/lib/date";
 
 export const jobColumns: ColumnDef<JobExecution>[] = [
   {
@@ -26,10 +27,10 @@ export const jobColumns: ColumnDef<JobExecution>[] = [
   },
   {
     accessorKey: "started_at",
-    header: "Started",
+    header: "Started (IST)",
     cell: ({ row }) => {
       const date = row.getValue("started_at") as string;
-      return date ? new Date(date).toLocaleString() : "-";
+      return <span className="font-mono text-xs text-muted-foreground">{formatIST(date)}</span>;
     },
   },
 ];
