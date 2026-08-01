@@ -1,5 +1,4 @@
 import os
-import subprocess
 import logging
 from pathlib import Path
 from playwright.async_api import async_playwright, Browser, BrowserContext
@@ -47,22 +46,10 @@ class BrowserManager:
             "--no-zygote"
         ]
 
-        try:
-            self.browser = await self.playwright.chromium.launch(
-                headless=True,
-                args=launch_args
-            )
-        except Exception as launch_err:
-            logger.warning(f"Initial Chromium launch failed ({launch_err}). Auto-installing Playwright Chromium...")
-            try:
-                subprocess.run(["playwright", "install", "chromium"], check=False)
-                self.browser = await self.playwright.chromium.launch(
-                    headless=True,
-                    args=launch_args
-                )
-            except Exception as retry_err:
-                logger.error(f"Failed auto-installing Chromium: {retry_err}")
-                raise retry_err
+        self.browser = await self.playwright.chromium.launch(
+            headless=True,
+            args=launch_args
+        )
 
         context_options = {}
         if self.state_file.exists():
