@@ -17,11 +17,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigationConfig } from "@/config/navigation";
 import { cn } from "@/lib/utils";
+import { authService } from "@/services/auth.service";
+import { toast } from "sonner";
 
 export function TopBar() {
   const { setTheme, theme } = useTheme();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (e) {
+      // Continue client cleanup even if network fails
+    } finally {
+      document.cookie = "access_token=; path=/; max-age=0;";
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("access_token");
+        toast.info("Logged out");
+        window.location.href = "/login";
+      }
+    }
+  };
 
   return (
     <>
@@ -68,13 +85,7 @@ export function TopBar() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {
-                document.cookie = "access_token=; path=/; max-age=0;";
-                if (typeof window !== "undefined") {
-                  localStorage.removeItem("access_token");
-                  window.location.href = "/login";
-                }
-              }} className="text-red-600">
+              <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </DropdownMenuItem>

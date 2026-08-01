@@ -46,7 +46,7 @@ export default function LoginPage() {
       toast.success("Login successful");
       const token = res?.data?.data?.access_token || res?.data?.access_token;
       if (token) {
-        document.cookie = `access_token=Bearer ${token}; path=/; max-age=86400; SameSite=Lax`;
+        document.cookie = `access_token=Bearer ${token}; path=/; max-age=2592000; SameSite=Lax`;
         if (typeof window !== "undefined") {
           localStorage.setItem("access_token", token);
         }
