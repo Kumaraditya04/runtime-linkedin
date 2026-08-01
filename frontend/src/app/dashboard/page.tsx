@@ -39,9 +39,19 @@ export default function DashboardPage() {
   const [keywordId, setKeywordId] = useState("31");
 
   // Progress metrics calculation
-  const totalKeywords = stats?.total_keywords ?? 10;
-  const runningJobsCount = jobs.filter((j) => j.status === "RUNNING" || j.status === "STARTING" || j.status === "SAVING").length;
-  const completedJobsCount = jobs.filter((j) => j.status === "COMPLETED").length;
+  const latestJobsByKeyword = new Map<number, any>();
+  jobs.forEach((job: any) => {
+    const existing = latestJobsByKeyword.get(job.keyword_id);
+    if (!existing || new Date(job.started_at) > new Date(existing.started_at)) {
+      latestJobsByKeyword.set(job.keyword_id, job);
+    }
+  });
+  const latestJobs = Array.from(latestJobsByKeyword.values());
+
+  const totalKeywords = stats?.active_keywords ?? stats?.total_keywords ?? Math.max(1, latestJobs.length);
+  const runningJobsCount = latestJobs.filter((j) => ["RUNNING", "STARTING", "SAVING"].includes(j.status)).length;
+  const completedJobsCount = latestJobs.filter((j) => ["COMPLETED", "FAILED"].includes(j.status)).length;
+  
   const progressPercent = Math.min(100, Math.round((completedJobsCount / Math.max(1, totalKeywords)) * 100));
 
   const handleRunSingleCrawler = () => {

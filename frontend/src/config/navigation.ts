@@ -1,4 +1,4 @@
-import { LayoutDashboard, Key, Settings, Search, Contact, List } from 'lucide-react';
+import { LayoutDashboard, Key, Settings, Search, Contact, List, Activity } from 'lucide-react';
 
 export const navigationConfig = [
   {
@@ -15,6 +15,11 @@ export const navigationConfig = [
     title: 'Leads',
     icon: Contact,
     href: '/dashboard/leads',
+  },
+  {
+    title: 'Executions',
+    icon: Activity,
+    href: '/dashboard/executions',
   },
   {
     title: 'System Settings',

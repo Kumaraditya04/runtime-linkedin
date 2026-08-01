@@ -2,6 +2,8 @@
 
 ## [1.1.0] - 2026-08-01
 ### Added
+- **Crawler Executions UI**: Added dedicated "Executions" tab to the frontend dashboard for viewing comprehensive crawler job histories.
+- **Dynamic Extraction Progress**: Refactored the live extraction progress bar to calculate status dynamically based on the most recent job batch per keyword, rather than hardcoded global aggregates.
 - **Render Deployment Support**: Created `docs/deployment/render.md` and verification script `scripts/check_playwright.py`.
 - **Runtime Browser Detection**: Added `BrowserManager.check_environment()` diagnostic check and `DeploymentConfigurationError` exception handling.
 - **Extended Health Check**: Updated `GET /api/v1/internal/health` to return `database`, `scheduler`, `playwright`, and `chromium` diagnostic metrics.
