@@ -30,11 +30,24 @@ class BrowserManager:
         self.storage_path.mkdir(parents=True, exist_ok=True)
         self.playwright = await async_playwright().start()
         
-        self.browser = await self.playwright.chromium.launch(headless=True)
+        # Launch Chromium with Linux container sandbox & memory flags for Render cloud deployment
+        self.browser = await self.playwright.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--no-zygote"
+            ]
+        )
 
         context_options = {}
         if self.state_file.exists():
-            context_options["storage_state"] = str(self.state_file)
+            try:
+                context_options["storage_state"] = str(self.state_file)
+            except Exception:
+                pass
 
         self.context = await self.browser.new_context(**context_options)
         
