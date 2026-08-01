@@ -13,11 +13,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-// Helper function to format date/time in Indian Standard Time (IST)
+// Helper function to convert UTC date strings accurately to Indian Standard Time (IST / Asia/Kolkata)
 function formatIST(dateStr: string | null | undefined, includeTime = true) {
   if (!dateStr) return "N/A";
   try {
-    const date = new Date(dateStr);
+    let s = String(dateStr).trim();
+    if (s.includes(" ") && !s.includes("T")) {
+      s = s.replace(" ", "T");
+    }
+    if (!s.endsWith("Z") && !s.includes("+")) {
+      s += "Z";
+    }
+    const date = new Date(s);
     if (isNaN(date.getTime())) return "N/A";
     
     if (includeTime) {
