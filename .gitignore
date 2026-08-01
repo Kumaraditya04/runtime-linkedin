@@ -1,0 +1,30 @@
+# Environment variables & secrets
+.env
+*.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+*.sqlite3
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Storage & Crawling cache
+storage/
+*.log
+*.html
+
+# IDE & OS
+.DS_Store
+.vscode/
+.idea/
