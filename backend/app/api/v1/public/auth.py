@@ -35,17 +35,20 @@ async def login_access_token(
         admin.id, role=admin.role
     )
     
-    # Set HttpOnly Cookie
+    # Set HttpOnly Cookie (Cross-domain ready)
     response.set_cookie(
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
-        secure=False, # Set to False for local dev (HTTP), True for prod (HTTPS)
-        samesite="lax",
+        secure=True,
+        samesite="none",
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
     )
     
-    return success_response(message="Login successful", data={"role": admin.role})
+    return success_response(
+        message="Login successful",
+        data={"role": admin.role, "access_token": access_token, "token_type": "bearer"}
+    )
 
 @router.post("/logout", response_model=StandardResponse[dict])
 async def logout(response: Response) -> Any:

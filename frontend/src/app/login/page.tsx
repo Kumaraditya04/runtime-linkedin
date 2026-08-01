@@ -42,9 +42,18 @@ export default function LoginPage() {
       params.append("password", data.password);
       return authService.login(params);
     },
-    onSuccess: () => {
+    onSuccess: (res: any) => {
       toast.success("Login successful");
-      router.push("/dashboard");
+      const token = res?.data?.data?.access_token || res?.data?.access_token;
+      if (token) {
+        document.cookie = `access_token=Bearer ${token}; path=/; max-age=86400; SameSite=Lax`;
+        if (typeof window !== "undefined") {
+          localStorage.setItem("access_token", token);
+        }
+      }
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectPath = searchParams.get("redirect") || "/dashboard/leads";
+      window.location.href = redirectPath;
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.detail || "Failed to login");
