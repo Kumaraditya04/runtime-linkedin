@@ -9,6 +9,7 @@ from app.crawler.linkedin import LinkedInCrawler
 from app.services.keyword import KeywordService
 from app.models.job_execution import JobExecution, JobStatus, JobErrorCategory
 from app.models.lead import Lead, LeadStatus
+from app.core.exceptions import DeploymentConfigurationError
 from pydantic import BaseModel
 import asyncio
 import logging
@@ -97,8 +98,16 @@ async def execute_crawl_job(keyword_id: int):
             
             await db.commit()
             logger.info(f"Crawl finished. Saved {len(leads_extracted)} leads.")
+        except DeploymentConfigurationError as dep_e:
+            logger.error(f"Deployment/Environment configuration error for keyword {keyword_id}: {dep_e}")
+            if 'job' in locals():
+                job.status = JobStatus.FAILED
+                job.finished_at = datetime.now(timezone.utc)
+                job.error_message = str(dep_e)
+                job.error_category = JobErrorCategory.ENVIRONMENT
+                await db.commit()
         except Exception as e:
-            logger.error(f"Crawl failed: {e}")
+            logger.error(f"Crawl failed for keyword {keyword_id}: {e}")
             err_msg = str(e)
             category = JobErrorCategory.UNKNOWN
             if "login wall" in err_msg.lower() or "auth" in err_msg.lower():
@@ -109,6 +118,8 @@ async def execute_crawl_job(keyword_id: int):
                 category = JobErrorCategory.RATE_LIMITED
             elif "selector" in err_msg.lower():
                 category = JobErrorCategory.SELECTOR_CHANGED
+            elif "chromium" in err_msg.lower() or "executable" in err_msg.lower():
+                category = JobErrorCategory.ENVIRONMENT
 
             if 'job' in locals():
                 job.status = JobStatus.FAILED

@@ -19,6 +19,7 @@ class JobErrorCategory(str, enum.Enum):
     RATE_LIMITED = "RATE_LIMITED"
     SELECTOR_CHANGED = "SELECTOR_CHANGED"
     NETWORK_ERROR = "NETWORK_ERROR"
+    ENVIRONMENT = "ENVIRONMENT"
     UNKNOWN = "UNKNOWN"
 
 class JobExecution(Base, TimestampMixin):

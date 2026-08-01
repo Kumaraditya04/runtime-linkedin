@@ -1,5 +1,15 @@
 # LeadRadar AI Changelog
 
+## [1.1.0] - 2026-08-01
+### Added
+- **Render Deployment Support**: Created `docs/deployment/render.md` and verification script `scripts/check_playwright.py`.
+- **Runtime Browser Detection**: Added `BrowserManager.check_environment()` diagnostic check and `DeploymentConfigurationError` exception handling.
+- **Extended Health Check**: Updated `GET /api/v1/internal/health` to return `database`, `scheduler`, `playwright`, and `chromium` diagnostic metrics.
+- **Graceful Error Recovery**: Updated `JobExecution` model with `JobErrorCategory.ENVIRONMENT` and non-blocking scheduler error resilience.
+- **Stealth Crawler Upgrades**: Added Mac OS Desktop `User-Agent` headers, desktop viewport, and `navigator.webdriver` masking to `BrowserManager`.
+- **IST Localization & Sorting**: Added universal `formatIST()` date helper and default descending lead sorting.
+- **Mobile Responsiveness**: Added touch-optimized mobile lead cards view (`md:hidden`) and mobile navigation menu drawer.
+
 ## [1.0.0] - 2026-07-31
 ### Added
 - Repository initialization and clean architecture scaffolding.
