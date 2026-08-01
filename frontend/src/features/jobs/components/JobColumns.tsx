@@ -5,12 +5,12 @@ import { formatIST } from "@/lib/date";
 
 export const jobColumns: ColumnDef<JobExecution>[] = [
   {
-    accessorKey: "keyword_id",
-    header: "Keyword ID",
-  },
-  {
-    accessorKey: "job_type",
-    header: "Type",
+    id: "keyword_name",
+    header: "Target Keyword",
+    cell: ({ row }) => {
+      const name = row.original.keyword_name || (row.original.keyword_id ? `Keyword #${row.original.keyword_id}` : "Global Crawl");
+      return <span className="font-semibold text-foreground">{name}</span>;
+    },
   },
   {
     accessorKey: "status",
@@ -24,6 +24,15 @@ export const jobColumns: ColumnDef<JobExecution>[] = [
   {
     accessorKey: "records_found",
     header: "Found",
+  },
+  {
+    id: "saved",
+    header: "Saved / Skipped",
+    cell: ({ row }) => {
+      const saved = row.original.records_saved ?? 0;
+      const skipped = row.original.records_skipped ?? 0;
+      return <span className="text-xs font-mono">{saved} saved ({skipped} dupes)</span>;
+    },
   },
   {
     accessorKey: "started_at",

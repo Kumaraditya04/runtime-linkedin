@@ -125,3 +125,12 @@ async def manual_crawl_run(
 ):
     background_tasks.add_task(execute_crawl_job, payload.keyword_id)
     return {"message": "Crawl job started in background.", "keyword_id": payload.keyword_id}
+
+@router.post("/run-all")
+async def manual_crawl_all_run(
+    background_tasks: BackgroundTasks,
+    admin=Depends(get_current_admin)
+):
+    from app.scheduler.scheduler import run_scheduled_keyword_crawls
+    background_tasks.add_task(run_scheduled_keyword_crawls)
+    return {"message": "Batch crawl task started for all active keywords in background."}

@@ -1,8 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { runCrawler } from "../api";
+import { runCrawler, runAllCrawlers } from "../api";
 
 export const useRunCrawler = () => {
   return useMutation({
-    mutationFn: runCrawler,
+    mutationFn: (keywordId: number) => runCrawler(keywordId),
+  });
+};
+
+export const useRunAllCrawlers = () => {
+  return useMutation({
+    mutationFn: () => runAllCrawlers(),
   });
 };
