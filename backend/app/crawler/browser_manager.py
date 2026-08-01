@@ -58,7 +58,20 @@ class BrowserManager:
             except Exception:
                 pass
 
-        self.context = await self.browser.new_context(**context_options)
+        self.context = await self.browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+            viewport={"width": 1280, "height": 800},
+            device_scale_factor=1,
+            locale="en-US",
+            timezone_id="Asia/Kolkata",
+            **context_options
+        )
+        
+        # Inject stealth script to bypass headless automation detection
+        await self.context.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+            window.navigator.chrome = { runtime: {} };
+        """)
         
         # Inject LINKEDIN_LI_AT cookie if present in environment
         li_at_cookie = os.environ.get("LINKEDIN_LI_AT")
