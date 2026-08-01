@@ -2,6 +2,8 @@
 
 ## [1.1.0] - 2026-08-01
 ### Added
+- **Docker Orchestration**: Added `docker-compose.yml`, `.dockerignore`, and Dockerfiles for frontend and backend to support standalone containerized deployments.
+- **Oracle Cloud Deployment Guide**: Added step-by-step guide (`docs/deployment/oracle.md`) for deploying on Oracle ARM Always Free instances.
 - **Crawler Executions UI**: Added dedicated "Executions" tab to the frontend dashboard for viewing comprehensive crawler job histories.
 - **Dynamic Extraction Progress**: Refactored the live extraction progress bar to calculate status dynamically based on the most recent job batch per keyword, rather than hardcoded global aggregates.
 - **Render Deployment Support**: Created `docs/deployment/render.md` and verification script `scripts/check_playwright.py`.
