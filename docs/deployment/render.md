@@ -6,17 +6,16 @@ This guide documents how to deploy LeadRadar AI to **Render Free Tier** with per
 
 ## 1. Required Build Command
 
+We have provided a dedicated build script that ensures the Playwright browser is installed inside your project environment so that it persists to the Render runtime.
+
 In your Render Dashboard Web Service settings:
 
 - **Build Command**:
   ```bash
-  pip install -r requirements.txt && playwright install chromium
+  ./render-build.sh
   ```
 
-If your build environment requires system dependencies, use:
-```bash
-pip install -r requirements.txt && playwright install --with-deps chromium
-```
+*(If you prefer to enter the command manually, it is: `pip install -r requirements.txt && export PLAYWRIGHT_BROWSERS_PATH=0 && playwright install chromium`)*
 
 ---
 

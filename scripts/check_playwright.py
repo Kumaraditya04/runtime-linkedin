@@ -10,6 +10,9 @@ import asyncio
 import os
 import logging
 
+if "PLAYWRIGHT_BROWSERS_PATH" not in os.environ:
+    os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 async def verify_playwright():

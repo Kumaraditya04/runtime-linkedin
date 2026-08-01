@@ -1,4 +1,10 @@
 import os
+
+# Ensure Playwright installs/looks for browsers inside the local project environment
+# This is critical for Render deployments where .cache is not persisted at runtime.
+if "PLAYWRIGHT_BROWSERS_PATH" not in os.environ:
+    os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"
+
 import logging
 from pathlib import Path
 from typing import Dict, Any
