@@ -6,7 +6,7 @@ from sqlalchemy import text
 from app.database.database import get_db
 from app.core.responses import StandardResponse, success_response
 from app.crawler.browser_manager import BrowserManager
-from app.scheduler.scheduler import scheduler
+from app.scheduler.scheduler import scheduler_service
 
 router = APIRouter()
 
@@ -21,7 +21,7 @@ async def health_check(db: AsyncSession = Depends(get_db)):
         db_ok = False
 
     # 2. Scheduler Check
-    scheduler_ok = scheduler.running if scheduler else False
+    scheduler_ok = scheduler_service.is_running if scheduler_service else False
 
     # 3. Playwright & Chromium Environment Check
     env_diag = await BrowserManager.check_environment()
