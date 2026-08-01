@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://runtime-linkedin.onrender.com/api/v1',
   withCredentials: true, // Crucial for sending/receiving HttpOnly cookies
   headers: {
     'Content-Type': 'application/json',
