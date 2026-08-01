@@ -21,16 +21,26 @@ export function KeywordForm({ initialData, onSubmit, isLoading }: KeywordFormPro
     handleSubmit,
     formState: { errors },
   } = useForm<KeywordFormValues>({
-    resolver: zodResolver(keywordSchema),
-    defaultValues: initialData || {
-      keyword: "",
-      category: "",
-      source: "LinkedIn",
-      priority: 1,
-      status: "ACTIVE",
-      search_type: "exact",
-      notes: "",
-    },
+    resolver: zodResolver(keywordSchema) as any,
+    defaultValues: initialData
+      ? {
+          keyword: initialData.keyword || "",
+          category: initialData.category || "",
+          source: initialData.source || "LinkedIn",
+          priority: initialData.priority || 1,
+          status: initialData.status || "ACTIVE",
+          search_type: initialData.search_type || "exact",
+          notes: initialData.notes || "",
+        }
+      : {
+          keyword: "",
+          category: "",
+          source: "LinkedIn",
+          priority: 1,
+          status: "ACTIVE",
+          search_type: "exact",
+          notes: "",
+        },
   });
 
   return (

@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 
 export const keywordColumns: ColumnDef<Keyword>[] = [
   {
@@ -44,7 +43,7 @@ export const keywordColumns: ColumnDef<Keyword>[] = [
 
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
@@ -52,8 +51,12 @@ export const keywordColumns: ColumnDef<Keyword>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem asChild>
-              <Link href={`/dashboard/keywords/${keyword.id}/edit`}>Edit</Link>
+            <DropdownMenuItem onClick={() => {
+              if (typeof window !== "undefined") {
+                window.location.href = `/dashboard/keywords/${keyword.id}/edit`;
+              }
+            }}>
+              Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>

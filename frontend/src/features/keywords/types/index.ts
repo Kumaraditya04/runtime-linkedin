@@ -1,5 +1,6 @@
 import { KeywordFormValues } from "../schemas";
 
+export type { KeywordFormValues };
 export type KeywordStatus = "ACTIVE" | "PAUSED" | "ARCHIVED";
 
 export interface Keyword extends KeywordFormValues {
