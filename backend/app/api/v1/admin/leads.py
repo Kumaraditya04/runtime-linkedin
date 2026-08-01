@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("", response_model=List[LeadResponse])
 async def get_leads(
     skip: int = Query(0, ge=0),
-    limit: int = Query(10, ge=1, le=100),
+    limit: int = Query(200, ge=1, le=500),
     sort_by: str = Query("created_at"),
     sort_order: str = Query("desc"),
     search: Optional[str] = Query(None),
