@@ -67,7 +67,13 @@ class LinkedInCrawler(BaseCrawler):
         url = f"https://www.linkedin.com/search/results/content/?keywords={kw_encoded}"
         
         logger.info(f"Navigating to {url}")
-        await page.goto(url, wait_until="domcontentloaded", timeout=20000)
+        try:
+            await page.goto(url, wait_until="domcontentloaded", timeout=35000)
+        except Exception as goto_err:
+            if "Timeout" in str(goto_err):
+                logger.warning(f"Search page navigation timed out after 35s, attempting to parse loaded content anyway: {goto_err}")
+            else:
+                raise
         await self._random_delay(min_delay, max_delay)
         
         # Check if we hit a login wall
