@@ -1,0 +1,48 @@
+id,keyword,category,status,last_run_at,last_result_count
+1,looking for software company,Agency,ACTIVE,2026-08-02 14:23:04.894555,3
+2,looking for software development company,Agency,ACTIVE,2026-08-01 14:55:04.167893,9
+3,looking for development company,Agency,ACTIVE,2026-08-01 14:55:56.092503,9
+4,looking for web development company,Agency,ACTIVE,2026-08-01 14:56:46.583374,6
+5,looking for mobile app development company,Agency,ACTIVE,2026-08-01 14:57:37.324999,6
+6,looking for app development company,Agency,ACTIVE,,0
+7,looking for software agency,Agency,ACTIVE,,0
+8,looking for development agency,Agency,ACTIVE,2026-07-31 18:27:16.853361,12
+9,looking for IT company,Agency,ACTIVE,,0
+10,looking for tech partner,Agency,ACTIVE,2026-07-31 18:28:58.073728,9
+11,looking for technology partner,Agency,ACTIVE,,0
+12,looking for outsourcing partner,Agency,ACTIVE,2026-07-31 18:29:36.087027,12
+13,need software company,Agency,ACTIVE,,0
+14,need development agency,Agency,ACTIVE,,0
+15,recommend software company,Agency,ACTIVE,,0
+16,recommend development company,Agency,ACTIVE,,0
+17,building MVP,Startup,ACTIVE,,0
+18,startup MVP,Startup,ACTIVE,,0
+19,need technical partner,Startup,ACTIVE,,0
+20,looking for CTO,Startup,ACTIVE,,0
+21,hire remote developers,Hiring,ACTIVE,,0
+22,dedicated development team,Hiring,ACTIVE,,0
+23,software outsourcing,Outsourcing,ACTIVE,,0
+24,custom software development,Services,ACTIVE,,0
+25,AI development company,AI,ACTIVE,,0
+26,ChatGPT integration,AI,ACTIVE,,0
+27,software project stuck,Pain Point,ACTIVE,,0
+28,replace development company,Pain Point,ACTIVE,,0
+29,software development quotation,Budget,ACTIVE,,0
+30,website development cost,Budget,ACTIVE,,0
+31,looking for an agency for development,Direct Intent,ACTIVE,2026-07-31 18:23:18.577488,10
+32,looking for web development agency,Direct Intent,ACTIVE,2026-07-31 18:27:53.903646,12
+33,need software development company,Direct Intent,ACTIVE,2026-07-31 18:30:08.012310,6
+34,need web development agency,Direct Intent,ACTIVE,2026-07-31 18:30:41.513822,9
+35,recommend software development agency,Agency Search,ACTIVE,2026-07-31 18:31:11.025545,6
+36,looking for marketing agency,Marketing,ACTIVE,2026-08-01 14:52:33.146653,9
+37,looking for digital marketing agency,Marketing,ACTIVE,,0
+38,need marketing help,Marketing,ACTIVE,,0
+39,looking for social media agency,Marketing,ACTIVE,,0
+40,need SEO help,Marketing,ACTIVE,,0
+41,looking for content marketing agency,Marketing,ACTIVE,,0
+42,need email marketing,Marketing,ACTIVE,,0
+43,looking for growth marketing,Marketing,ACTIVE,,0
+44,need PPC agency,Marketing,ACTIVE,,0
+45,looking for marketing consultant,Marketing,ACTIVE,,0
+46,need digital marketing,Marketing,ACTIVE,,0
+47,looking for performance marketing,Marketing,ACTIVE,,0

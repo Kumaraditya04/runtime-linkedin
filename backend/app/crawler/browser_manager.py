@@ -124,7 +124,17 @@ class BrowserManager:
             "--disable-setuid-sandbox",
             "--disable-dev-shm-usage",
             "--disable-gpu",
-            "--no-zygote"
+            "--no-zygote",
+            "--single-process",
+            "--disable-extensions",
+            "--disable-background-networking",
+            "--disable-background-timer-throttling",
+            "--disable-backgrounding-occluded-windows",
+            "--disable-breakpad",
+            "--disable-component-update",
+            "--disable-ipc-flooding-protection",
+            "--disable-renderer-backgrounding",
+            "--js-flags=--max-old-space-size=128"
         ]
 
         try:

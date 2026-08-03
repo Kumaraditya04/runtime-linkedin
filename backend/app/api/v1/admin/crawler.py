@@ -24,7 +24,7 @@ class CrawlRequest(BaseModel):
     keyword_id: int
 
 async def execute_crawl_job(keyword_id: int):
-    crawler = LinkedInCrawler()
+    crawler = None
     from app.database.database import AsyncSessionLocal
     async with AsyncSessionLocal() as db:
         try:
@@ -55,6 +55,7 @@ async def execute_crawl_job(keyword_id: int):
                 leads_extracted = await voyager.crawl(keyword, db=db)
             except Exception as voyager_err:
                 logger.warning(f"Voyager REST API crawl failed for '{keyword.keyword}' ({voyager_err}). Falling back to Playwright crawler.")
+                crawler = LinkedInCrawler()
                 leads_extracted = await crawler.crawl(keyword, db=db)
             
             job.records_found = len(leads_extracted)
@@ -126,6 +127,14 @@ async def execute_crawl_job(keyword_id: int):
                 job.error_message = err_msg
                 job.error_category = category
                 await db.commit()
+        finally:
+            if crawler is not None:
+                try:
+                    await crawler.cleanup()
+                except Exception:
+                    pass
+            import gc
+            gc.collect()
 
 @router.post("/run")
 async def manual_crawl_run(
