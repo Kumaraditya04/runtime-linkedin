@@ -1,10 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
-import { getJobs } from "../api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getJobs, cancelJob } from "../api";
 
 export const useJobs = () => {
   return useQuery({
     queryKey: ["jobs"],
     queryFn: getJobs,
-    refetchInterval: 5000, // Poll every 5s for MVP real-time feel
+    refetchInterval: 5000,
+  });
+};
+
+export const useCancelJob = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: cancelJob,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["jobs"] }),
   });
 };

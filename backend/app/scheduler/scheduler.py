@@ -33,8 +33,8 @@ async def run_scheduled_keyword_crawls():
         logger.info(f"Auto-crawling keyword ID {kw.id}: '{kw.keyword}'")
         try:
             await execute_crawl_job(kw.id)
-            # Safe 15-30 second human-like pause between keyword searches to protect LinkedIn account
-            await asyncio.sleep(20)
+            # 45s human-like pause between keywords to avoid LinkedIn rate limiting
+            await asyncio.sleep(45)
         except Exception as err:
             logger.error(f"Error auto-crawling keyword ID {kw.id}: {err}")
 

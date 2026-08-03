@@ -21,8 +21,30 @@ class LinkedInCrawler(BaseCrawler):
         await asyncio.sleep(delay)
 
     async def login(self):
-        # We rely on the LI_AT cookie injected via BrowserManager
-        pass
+        """Navigate to feed first to establish session and detect checkpoint pages."""
+        page = self.page
+        try:
+            await page.goto("https://www.linkedin.com/feed/", wait_until="domcontentloaded", timeout=20000)
+        except Exception as e:
+            if "ERR_TOO_MANY_REDIRECTS" in str(e) or "Timeout" in str(e):
+                raise ValueError(
+                    "LinkedIn is not loading (redirect loop or timeout). "
+                    "Your account may need manual verification — open LinkedIn in your browser "
+                    "and complete any security check, then refresh your li_at cookie."
+                )
+            raise
+        await self._random_delay(1500, 3000)
+
+        current_url = page.url
+        logger.info(f"Login check: landed on {current_url[:80]}")
+        if "/checkpoint/" in current_url or "/challenge/" in current_url:
+            raise ValueError(
+                f"LinkedIn requires manual verification (checkpoint). "
+                f"Open LinkedIn in your browser, complete the security check, "
+                f"then update LINKEDIN_LI_AT in your .env. URL: {current_url}"
+            )
+        if "/login" in current_url or "/signup" in current_url:
+            raise ValueError("LinkedIn rejected the li_at cookie — please refresh it from your browser.")
 
     async def _get_setting(self, db: AsyncSession, key: str, default: int) -> int:
         s = await db.get(SystemSettings, key)
@@ -45,7 +67,7 @@ class LinkedInCrawler(BaseCrawler):
         url = f"https://www.linkedin.com/search/results/content/?keywords={kw_encoded}"
         
         logger.info(f"Navigating to {url}")
-        await page.goto(url, wait_until="domcontentloaded")
+        await page.goto(url, wait_until="domcontentloaded", timeout=20000)
         await self._random_delay(min_delay, max_delay)
         
         # Check if we hit a login wall

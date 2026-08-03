@@ -28,6 +28,10 @@ class LeadUpdate(LeadBase):
 class LeadResponse(LeadBase):
     id: int
     created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
     updated_at: datetime
     created_by: Optional[int]
     updated_by: Optional[int]

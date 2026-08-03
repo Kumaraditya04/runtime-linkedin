@@ -4,19 +4,15 @@ from pydantic import BaseModel
 T = TypeVar("T")
 
 class PaginationParams(BaseModel):
-    page: int = 1
-    page_size: int = 20
+    skip: int = 0
+    limit: int = 500
     search: str | None = None
     sort_by: str | None = None
-    order: str = "asc" # asc or desc
+    sort_order: str = "desc"
 
     @property
-    def skip(self) -> int:
-        return (self.page - 1) * self.page_size
-
-    @property
-    def limit(self) -> int:
-        return self.page_size
+    def order(self) -> str:
+        return self.sort_order
 
 class PaginatedResponse(BaseModel, Generic[T]):
     items: List[T]

@@ -51,24 +51,21 @@ export default function LeadsPage() {
     let s = String(dateStr).trim();
     if (s.includes(" ") && !s.includes("T")) s = s.replace(" ", "T");
     if (!s.endsWith("Z") && !s.includes("+")) s += "Z";
-    
     const d = new Date(s);
-    const now = new Date();
-    
-    const isToday =
-      d.getDate() === now.getDate() &&
-      d.getMonth() === now.getMonth() &&
-      d.getFullYear() === now.getFullYear();
 
-    const yesterday = new Date(now);
-    yesterday.setDate(now.getDate() - 1);
-    const isYesterday =
-      d.getDate() === yesterday.getDate() &&
-      d.getMonth() === yesterday.getMonth() &&
-      d.getFullYear() === yesterday.getFullYear();
+    // Compare dates in IST (Asia/Kolkata) to avoid UTC midnight off-by-one
+    const toISTDateStr = (date: Date) =>
+      date.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }); // YYYY-MM-DD
 
-    if (isToday) return "today";
-    if (isYesterday) return "yesterday";
+    const todayIST = toISTDateStr(new Date());
+    const dIST = toISTDateStr(d);
+
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterdayIST = toISTDateStr(yesterdayDate);
+
+    if (dIST === todayIST) return "today";
+    if (dIST === yesterdayIST) return "yesterday";
     return "older";
   };
 

@@ -1,7 +1,34 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { JobExecution } from "../types";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { formatIST } from "@/lib/date";
+import { useCancelJob } from "../hooks";
+import { Square, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+const ACTIVE_STATUSES = new Set(["RUNNING", "STARTING", "SAVING", "PARSING"]);
+
+function CancelButton({ jobId }: { jobId: number }) {
+  const { mutate, isPending } = useCancelJob();
+  return (
+    <Button
+      variant="destructive"
+      size="sm"
+      className="h-7 px-2 text-xs gap-1"
+      disabled={isPending}
+      onClick={() =>
+        mutate(jobId, {
+          onSuccess: () => toast.success("Job stopped."),
+          onError: () => toast.error("Failed to stop job."),
+        })
+      }
+    >
+      {isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Square className="h-3 w-3" />}
+      Stop
+    </Button>
+  );
+}
 
 export const jobColumns: ColumnDef<JobExecution>[] = [
   {
@@ -40,6 +67,14 @@ export const jobColumns: ColumnDef<JobExecution>[] = [
     cell: ({ row }) => {
       const date = row.getValue("started_at") as string;
       return <span className="font-mono text-xs text-muted-foreground">{formatIST(date)}</span>;
+    },
+  },
+  {
+    id: "actions",
+    header: "",
+    cell: ({ row }) => {
+      if (!ACTIVE_STATUSES.has(row.original.status)) return null;
+      return <CancelButton jobId={row.original.id} />;
     },
   },
 ];

@@ -198,4 +198,21 @@ class BrowserManager:
                 logger.debug(f"Failed to save storage state: {e}")
 
     async def cleanup(self):
-        pass
+        if self.context:
+            try:
+                await self.context.close()
+            except Exception:
+                pass
+            self.context = None
+        if self.browser:
+            try:
+                await self.browser.close()
+            except Exception:
+                pass
+            self.browser = None
+        if self.playwright:
+            try:
+                await self.playwright.stop()
+            except Exception:
+                pass
+            self.playwright = None

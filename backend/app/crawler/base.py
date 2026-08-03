@@ -56,6 +56,9 @@ class BaseCrawler(ABC):
             if not extracted_leads and raw_results:
                 logger.warning("No leads extracted despite having raw results. Saving snapshot.")
                 await self._save_snapshot(keyword, "extraction_failed")
+
+            # Persist all cookies (including JSESSIONID) so Voyager crawler can reuse them
+            await self.browser_manager.save_state()
                 
             return extracted_leads
         except Exception as e:
@@ -84,5 +87,8 @@ class BaseCrawler(ABC):
 
     async def cleanup(self):
         if self.page:
-            await self.page.close()
-        # We don't call browser_manager.cleanup() here so the context is reused
+            try:
+                await self.page.close()
+            except Exception:
+                pass
+        await self.browser_manager.cleanup()
