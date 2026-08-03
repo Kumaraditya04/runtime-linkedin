@@ -48,7 +48,15 @@ async def execute_crawl_job(keyword_id: int):
             await db.refresh(job)
 
             logger.info(f"Starting crawl for keyword {keyword.keyword}")
-            leads_extracted = await crawler.crawl(keyword, db=db)
+            leads_extracted = []
+            try:
+                from app.crawler.voyager import LinkedInVoyagerCrawler
+                voyager = LinkedInVoyagerCrawler()
+                leads_extracted = await voyager.crawl(keyword, db=db)
+            except Exception as voyager_err:
+                logger.warning(f"Voyager REST API crawl failed for '{keyword.keyword}' ({voyager_err}). Falling back to Playwright crawler.")
+                leads_extracted = await crawler.crawl(keyword, db=db)
+            
             job.records_found = len(leads_extracted)
             
             job.status = JobStatus.SAVING
